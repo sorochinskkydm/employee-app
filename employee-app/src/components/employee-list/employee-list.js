@@ -1,10 +1,16 @@
 import EmployeeListItem from "../employee-list-item/employee-list-item";
 import "./employee-list.css";
 
-const EmployeeList = ({data}) => {
+const EmployeeList = ({data, onDelete}) => {
 
     const elements = data.map(item => {
-        return <EmployeeListItem key={item.uniqueKey} name={item.name} salary={item.salary} encrease={item.isEncrease}/>
+        const {uniqueKey} = item;
+        return <EmployeeListItem 
+                key={item.uniqueKey} 
+                name={item.name} 
+                salary={item.salary} 
+                increase={item.isEncrease}
+                onDelete={() => {onDelete(uniqueKey)}}/>
     });
 
     return (
