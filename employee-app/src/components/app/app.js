@@ -7,45 +7,60 @@ import './app.css';
 import { Component } from 'react';
 
 
-class App extends Component{
-
+class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data:[ {name:"alex", salary: 10000, isEncrease: false, uniqueKey: 1},
-                   {name:"mary", salary: 800, isEncrease: false, uniqueKey: 2},
-                   {name:"ann", salary: 900, isEncrease: false, uniqueKey: 3}
-                 ]
+            data: [
+                {name: 'John C.', salary: 800, increase: false, id: 1},
+                {name: 'Alex M.', salary: 3000, increase: true, id: 2},
+                {name: 'Carl W.', salary: 5000, increase: false, id: 3}
+            ]
         }
+        this.maxId = 4;
     }
 
-    deleteItem = (uniqueKey) => {
-        this.setState((state) => {
-            const indexItem = state.data.find(item => {
-                return item.uniqueKey === uniqueKey;
-            });
+    deleteItem = (id) => {
+        this.setState(({data}) => {
             return {
-                data: state.data.filter(item => item.uniqueKey !== uniqueKey)
+                data: data.filter(item => item.id !== id)
+            }
+        })
+    }
+
+    addItem = (name, salary) => {
+        const newItem = {
+            name, 
+            salary,
+            increase: false,
+            id: this.maxId++
+        }
+        this.setState(({data}) => {
+            const newArr = [...data, newItem];
+            return {
+                data: newArr
             }
         });
     }
 
-
     render() {
-        const {data} = this.state;
         return (
             <div className="app">
-                <AppInfo/>
+                <AppInfo />
+    
                 <div className="search-panel">
                     <SearchPanel/>
                     <AppFilter/>
                 </div>
-                <EmployeeList data={data}
-                              onDelete={this.deleteItem}/>
-                <EmployeeAddForm/>
+                
+                <EmployeeList 
+                    data={this.state.data}
+                    onDelete={this.deleteItem}/>
+                <EmployeeAddForm onAdd={this.addItem}/>
             </div>
         );
     }
 }
+
 
 export default App;
